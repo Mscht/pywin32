@@ -25,7 +25,7 @@ PyIShellIconOverlayIdentifier::~PyIShellIconOverlayIdentifier() {}
 // Python's True and False should not be used, as S_OK==0==False.
 PyObject *PyIShellIconOverlayIdentifier::IsMemberOf(PyObject *self, PyObject *args)
 {
-    IShellIconOverlayIdentifier *pISIOI = GetI(self);
+	IShellIconOverlayIdentifier *pISIOI = GetI(self);
     if (pISIOI == NULL)
         return NULL;
     // @pyparm <o PyUnicode>|path||Fully qualified path of the shell object
@@ -43,10 +43,9 @@ PyObject *PyIShellIconOverlayIdentifier::IsMemberOf(PyObject *self, PyObject *ar
     HRESULT hr;
     PY_INTERFACE_PRECALL;
     hr = pISIOI->IsMemberOf(path, attrib);
-    PyWinObject_FreeWCHAR(path);
-
     PY_INTERFACE_POSTCALL;
-
+	PyWinObject_FreeWCHAR(path);
+	
     if (FAILED(hr))
         return PyCom_BuildPyException(hr, pISIOI, IID_IShellIconOverlayIdentifier);
     return PyLong_FromLong(hr);
@@ -122,11 +121,14 @@ STDMETHODIMP PyGShellIconOverlayIdentifier::IsMemberOf(
     /* [unique][in] */ LPCWSTR path,
     /* [unique][in] */ DWORD attrib)
 {
+	OutputDebugString(L"start gateway impl IsMemberOf");
     PY_GATEWAY_METHOD;
     PyObject *obpath;
     obpath = PyWinObject_FromWCHAR(path);
     PyObject *ret;
+	OutputDebugString(L"call  IsMemberOf");
     HRESULT hr = InvokeViaPolicy("IsMemberOf", &ret, "Ol", obpath, attrib);
+	OutputDebugString(L"after call IsMemberOf");
     if (FAILED(hr))
         return hr;
     if (PyLong_Check(ret))
