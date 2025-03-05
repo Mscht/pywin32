@@ -5,7 +5,7 @@
 #include "PyIQueryAssociations.h"
 
 // @doc - This file contains autoduck documentation
-// ---------------------------------------------------
+// --------------------------------------------------
 //
 // Interface Implementation
 
